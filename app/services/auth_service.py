@@ -1,6 +1,7 @@
 from flask import jsonify, make_response
 from flask_jwt_extended import create_access_token
 from app.models.user import User
+from datetime import timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from app.utils.system_messages import USER_NOT_FOUND
@@ -30,20 +31,28 @@ class AuthService:
         user = User.find_by_email(email)
 
         if not user:
-            return {"error": USER_NOT_FOUND}, 404
+            return {"error": "User not found"}, 404
 
         # Validate the password
         if check_password_hash(user["password"], password):
-            # Create a token for the user
-            token = create_access_token(identity=email)
+            # Create an access token with a 15-day expiration time
+            token = create_access_token(identity=email, expires_delta=timedelta(days=15))
 
-            # Create a response object
-            response = make_response(jsonify({"message": "User logged in successfully"}))
+            # Create a JSON response
+            response_data = {"message": "User logged in successfully", "token": token}
 
-            # Set the token as an HttpOnly cookie
-            response.set_cookie("token", token, httponly=True, samesite="Lax", secure=True)
+            # Use `make_response` to set the cookie separately
+            response = make_response(jsonify(response_data))
+            response.set_cookie("token", token, httponly=True, samesite="Lax", secure=True, max_age=15 * 24 * 60 * 60)  # 15 days in seconds
 
-            return response  # Returning the response directly, no need for status code here
+            return response
 
         # If credentials are invalid, return an error
-        return jsonify({"error": "Invalid credentials"}), 401
+        return {"error": "Invalid credentials"}, 401
+        
+
+    def logout_user():
+            response = make_response(jsonify({"message": "Logged out successfully"}))  # ✅ Ensure response is JSON
+            response.set_cookie('token', '', expires=0, httponly=True, secure=True, samesite='None')  # ✅ Clear cookie
+            response.headers["Content-Type"] = "application/json"  # ✅ Explicitly set content type
+            return response  # ✅ Return only the response (no tuple)

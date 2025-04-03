@@ -49,3 +49,9 @@ class Login(Resource):
             return {"error": REQUIRE_FIELDS }, 400
         
         return AuthService.login_user(email, password)
+
+@auth_ns.route("/logout")
+class Logout(Resource):
+    def post(self):
+        """User logout"""
+        return AuthService.logout_user()

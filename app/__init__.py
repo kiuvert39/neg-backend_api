@@ -19,7 +19,7 @@ def create_app():
     else:
         app.config.from_object(DevConfig)
     # Set up CORS
-    CORS(app, resources={r"/*": {"origins": "*"}})  # Enable CORS for all routes
+    CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)  # Enable CORS for all routes
 
 
     # Initialize extensions

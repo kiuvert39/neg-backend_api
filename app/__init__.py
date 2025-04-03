@@ -2,7 +2,7 @@ import os
 from flask import Flask
 from flask_restx import Api
 from flask_cors import CORS
-from app.config import DevConfig, ProdConfig
+from app.config import Config, DevConfig, ProdConfig
 from app.extensions import bcrypt, jwt
 from app.database import init_db
 from app.routes.auth import auth_ns
@@ -19,7 +19,7 @@ def create_app():
     else:
         app.config.from_object(DevConfig)
     # Set up CORS
-    CORS(app, resources={r"/*": {"origins": "*"}})  # Enable CORS for all routes
+    CORS(app, resources={r"/*": {"origins": [Config.FRONTEND_URL,"http://localhost:3000/"]}})  # Enable CORS for all routes
 
 
     # Initialize extensions

@@ -9,6 +9,7 @@ class Config:
     MONGO_URI = os.getenv("MONGO_URI")
     FREEIMAGE_HOST_API_URL = os.getenv("FREEIMAGE_HOST_API_URL")
     FREEIMAGE_HOST_API_KEY = os.getenv("FREEIMAGE_HOST_API_KEY")
+    FRONTEND_URL = os.getenv("frontend_url")
     DEBUG = os.getenv("DEBUG", "False").lower() in ["true", "1"] 
 
 

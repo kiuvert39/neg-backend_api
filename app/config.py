@@ -7,7 +7,13 @@ class Config:
     SECRET_KEY = os.getenv("SECRET_KEY", "supersecretkey")
     JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "jwtsecretkey")
     MONGO_URI = os.getenv("MONGO_URI")
+    FREEIMAGE_HOST_API_URL = os.getenv("FREEIMAGE_HOST_API_URL")
+    FREEIMAGE_HOST_API_KEY = os.getenv("FREEIMAGE_HOST_API_KEY")
+    DEBUG = os.getenv("DEBUG", "False").lower() in ["true", "1"] 
 
 
 class DevConfig(Config):
-    DEBUG = True
+    pass  # Inherits everything from Config
+
+class ProdConfig(Config):
+    DEBUG = False  # Explicitly set DEBUG to False in production

@@ -7,7 +7,7 @@ class User:
     def get_collection():
         if mongo.db  is None:  # Correct way to check if db is initialized
             raise RuntimeError("Database connection is not initialized")
-        return mongo.db.users  # Get users collection only after MongoDB is ready
+        return mongo.db["users"]  # Get users collection only after MongoDB is ready
 
 
     def __init__(self, email, username, password):

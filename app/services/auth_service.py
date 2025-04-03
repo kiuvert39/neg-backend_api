@@ -1,7 +1,8 @@
-import bcrypt
 from flask_jwt_extended import create_access_token
 from app.models.user import User
 from werkzeug.security import generate_password_hash, check_password_hash
+
+from app.utils.system_messages import USER_NOT_FOUND
 
 class AuthService:
     @staticmethod
@@ -22,8 +23,11 @@ class AuthService:
 
         user = User.find_by_email(email)
 
-        if user and check_password_hash(user["password"], password):
-            access_token = create_access_token(identity=email)
-            return {"message" : "User loggedin successfully","access_token": access_token}, 200
+        if not user:
+            return {"error": USER_NOT_FOUND }, 404
+
+        if check_password_hash(user["password"], password):
+            token = create_access_token(identity=email)
+            return {"message" : "User loggedin successfully","token": token}, 200
         
         return {"error": "Invalid credentials"}, 401

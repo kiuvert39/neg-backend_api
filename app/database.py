@@ -9,12 +9,15 @@ def init_db(app: Flask):
     """
     Initialize the MongoDB connection using the URI from the app config.
     """
+
+    print(f"Debug: mongo.db -> {mongo.db}")
+
     try:
         app.config["MONGO_URI"] = app.config.get("MONGO_URI")  # Ensure it's set
         mongo.init_app(app)
 
         # Test connection
-        mongo.db.command("ping")
+        # mongo.db.command("ping")
         print(f"✅ Connected to MongoDB at {app.config['MONGO_URI']}")
     except ConnectionFailure as e:
         logging.error(f"❌ MongoDB connection failed: {e}")

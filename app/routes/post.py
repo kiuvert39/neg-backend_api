@@ -17,18 +17,30 @@ post_parser.add_argument('solution', required=True, type=str)
 @post_ns.route("/create")
 class Postroutes(Resource):
     # @post_ns.expect(post_parser)
-    def post(self):
-        """Create a new post"""
-        # Get form data instead of JSON
-        title = request.form.get("title")
-        description = request.form.get("description")
-        image_file = request.files.get("image")  # Get the image file
-        solution = request.form.get("solution")
+   def post(self):
+    """Create a new post"""
+    # Get form data instead of JSON
+    required_fields = {
+        "title": request.form.get("title"),
+        "description": request.form.get("description"),
+        "image_file": request.files.get("image"),  # Use "image_file" instead of "image"
+        "solution": request.form.get("solution"),
+        "subject": request.form.get("subject")
+    }
 
-        if not title or not description or not image_file or not solution:
-            return {"error": REQUIRE_FIELDS }, 400
+    # Find missing fields
+    missing_fields = [field for field, value in required_fields.items() if not value]
 
-        return PostService.create(title=title, description=description, image_file=image_file, solution=solution)
+    if missing_fields:
+        return {
+            "error": "Validation failed",
+            "missing_fields": missing_fields,
+            "message": "Please provide all required fields."
+        }, 400
+
+    # Pass the fields to the PostService
+    return PostService.create(**required_fields)
+
     
 @post_ns.route("/")
 class GetAllPosts(Resource):

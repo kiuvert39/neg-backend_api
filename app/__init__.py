@@ -7,6 +7,7 @@ from app.extensions import bcrypt, jwt
 from app.database import init_db
 from app.routes.auth import auth_ns
 from app.routes.post import post_ns
+from app.routes.homepage import homepage_ns
 
 
 import logging
@@ -36,5 +37,6 @@ def create_app():
     api = Api(app, title="Flask REST API", version="1.0", description="A simple API", doc="/docs"  )
     api.add_namespace(auth_ns, path="/auth")
     api.add_namespace(post_ns, path="/post")
+    api.add_namespace(homepage_ns, path="/homepage")
 
     return app

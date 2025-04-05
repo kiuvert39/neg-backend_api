@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from bson import ObjectId
 from flask import jsonify
 from app.extensions import mongo
@@ -13,6 +11,7 @@ class Post:
         self.description = kwargs.get('description')
         self.image = kwargs.get('image')
         self.solution = kwargs.get('solution')
+        self.subject = kwargs.get('subject')
         self.created_at = kwargs.get('created_at', datetime.utcnow())  # Set created_at to current time if not provided
         self.updated_at = kwargs.get('updated_at', datetime.utcnow())  # Set updated_at to current time if not provided
 
@@ -44,6 +43,7 @@ class Post:
             "description": self.description,
             "image": self.image,
             "solution": self.solution,
+            "subject": self.subject,    
             "created_at": self.created_at,
             "updated_at": self.updated_at
         }

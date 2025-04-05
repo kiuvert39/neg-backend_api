@@ -10,27 +10,34 @@ from app.utils.system_messages import CREATE_POST_SUCCESS, DELETE_POST_SUCCESS, 
 
 class PostService:
 
-    def create(title, description, image_file, solution):
+    def create(**kwargs):
+        image_file = kwargs.get("image_file")
 
-        url = ImageService.upload_image_to_imgbb(image_file=image_file)
-        if 'error' in url:
-            return url # Return the error response if there is one
-        
-        
-        image_url = url
-        
-        # If no display_url was found, return an error
+        # Upload image (wrap the image in a list since upload_images_to_imgbb expects a list)
+        url = ImageService.upload_images_to_imgbb([image_file])  # Pass as a list
+        if isinstance(url, dict) and 'error' in url:  # Check if URL contains an error message
+            return url  # Return the error response if there is one
+
+        image_url = url  # Assign the URL directly since it returns a string for one image
+
         if not image_url:
-            return {"error": FAILD_TO_UPLOAD_IMAGE}, 500
+            return {"error": "Failed to upload image"}, 500
 
-
-        post = Post(title=title, description=description, image=image_url, solution=solution)
+        # Create the post using all relevant fields
+        post = Post(
+            title=kwargs.get("title"),
+            description=kwargs.get("description"),
+            image=image_url,  # Correctly assign the image URL here
+            solution=kwargs.get("solution"),
+            subject=kwargs.get("subject")
+        )
         post.save()
+
         return {
-            "message": CREATE_POST_SUCCESS,
+            "message": "Post created successfully",
             "post": post.to_dict()
         }, 201
-    
+
 
 
     @staticmethod

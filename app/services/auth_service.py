@@ -43,7 +43,7 @@ class AuthService:
 
             # Use `make_response` to set the cookie separately
             response = make_response(jsonify(response_data))
-            response.set_cookie("token", token, httponly=True, samesite="Lax", secure=True, max_age=15 * 24 * 60 * 60)  # 15 days in seconds
+            response.set_cookie("token", token, httponly=True, samesite="Lax", secure=False, max_age=15 * 24 * 60 * 60)  # 15 days in seconds
 
             return response
 

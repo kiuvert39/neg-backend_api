@@ -8,6 +8,7 @@ from app.database import init_db
 from app.routes.auth import auth_ns
 from app.routes.post import post_ns
 from app.routes.homepage import homepage_ns
+from app.routes.faq import faq_ns
 
 
 import logging
@@ -20,7 +21,8 @@ def create_app():
     else:
         app.config.from_object(DevConfig)
     # Set up CORS
-    CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)  # Enable CORS for all routes
+    CORS(app, resources={r"/*": {"origins": "*", "methods": ["GET", "POST", "OPTIONS"], "supports_credentials": True}})
+
 
 
     # Initialize extensions
@@ -38,5 +40,6 @@ def create_app():
     api.add_namespace(auth_ns, path="/auth")
     api.add_namespace(post_ns, path="/post")
     api.add_namespace(homepage_ns, path="/homepage")
+    api.add_namespace(faq_ns, path="/faq")
 
     return app

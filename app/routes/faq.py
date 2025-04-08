@@ -6,6 +6,10 @@ from app.services.faq_sservice import FaqService
 
 
 faq_ns = Namespace("faqs", description="FAQ related operations")
+faq_update_model = faq_ns.model('FaqUpdate', {
+    'question': fields.String(required=False, description='The question'),
+    'answer': fields.String(required=False, description='The answer'),
+})
 
 
 homep_parser = reqparse.RequestParser()
@@ -68,3 +72,34 @@ class FaqRoutes(Resource):
             return {"message": "No FAQs found"}, 404
 
         return faqs, 200  # Return the pagination data along with FAQs
+
+
+
+
+@faq_ns.route('/<string:faq_id>')
+@faq_ns.param('faq_id', 'The FAQ ID')
+class FaqResource(Resource):
+
+    def get(self, faq_id):
+        """Get an FAQ by ID"""
+        try:
+            faq = FaqService.get_faq_by_id(faq_id)  # this now works correctly
+            return faq, 200
+        except Exception as e:
+            return {'error': str(e)}, getattr(e, 'code', 400)
+
+    @faq_ns.expect(faq_update_model)
+    def put(self, faq_id):
+        """Update an FAQ by ID"""
+        try:
+            data = request.json
+            return FaqService.update_faq(faq_id, data), 200
+        except Exception as e:
+            return {'error': str(e)}, getattr(e, 'code', 400)
+
+    def delete(self, faq_id):
+        """Delete an FAQ by ID"""
+        try:
+            return FaqService.delete_faq(faq_id), 200
+        except Exception as e:
+            return {'error': str(e)}, getattr(e, 'code', 400)

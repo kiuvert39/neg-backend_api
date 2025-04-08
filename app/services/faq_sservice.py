@@ -1,6 +1,8 @@
 
 
 from datetime import datetime
+from werkzeug.exceptions import NotFound, BadRequest
+from bson import ObjectId
 from app.models.faqs import Faq
 
 
@@ -40,3 +42,34 @@ class FaqService:
             "per_page": per_page,
             "total_pages": (total_faqs + per_page - 1) // per_page  # Round up to get the total pages
         }
+    
+    @staticmethod
+    def get_faq_by_id(faq_id):
+        if not ObjectId.is_valid(faq_id):
+            raise BadRequest('Invalid FAQ ID format')
+
+        faq = Faq().get_faq_by_id(faq_id)
+        if not faq:
+            raise NotFound('FAQ not found')
+
+        return faq.to_dict()
+
+    def update_faq(faq_id, data):
+        if not ObjectId.is_valid(faq_id):
+            raise BadRequest('Invalid FAQ ID format')
+        
+        faq = Faq()
+
+        updated = faq.update_faq(faq_id, data)
+        if not updated:
+            raise NotFound('FAQ not found or no change made')
+        return {'message': 'FAQ updated successfully'}
+    
+    def delete_faq(faq_id):
+        if not ObjectId.is_valid(faq_id):
+            raise BadRequest('Invalid FAQ ID format')
+        faq = Faq()
+        deleted = faq.delete_faq(faq_id)
+        if not deleted:
+            raise NotFound('FAQ not found')
+        return {'message': 'FAQ deleted successfully'}

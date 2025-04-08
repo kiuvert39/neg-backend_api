@@ -21,7 +21,7 @@ def create_app():
     else:
         app.config.from_object(DevConfig)
     # Set up CORS
-    CORS(app, resources={r"/*": {"origins": "*", "methods": ["GET", "POST", "OPTIONS"], "supports_credentials": True}})
+    CORS(app, resources={r"/*": {"origins": "*", "methods": ["GET", "POST", "OPTIONS", "PUT", "DELETE"], "supports_credentials": True}})
 
 
 

@@ -17,4 +17,4 @@ class DevConfig(Config):
     pass  # Inherits everything from Config
 
 class ProdConfig(Config):
-    DEBUG = False  # Explicitly set DEBUG to False in production
+    DEBUG = True  # Explicitly set DEBUG to False in production

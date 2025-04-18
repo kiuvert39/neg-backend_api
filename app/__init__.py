@@ -9,6 +9,12 @@ from app.routes.auth import auth_ns
 from app.routes.post import post_ns
 from app.routes.homepage import homepage_ns
 from app.routes.faq import faq_ns
+from app.routes.case_study import caseStudey_ns
+from app.routes.project import project_ns
+from app.routes.concept import concept_ns
+from app.routes.description import description_ns
+from app.routes.optin import dashboard_ns
+
 
 
 import logging
@@ -41,5 +47,10 @@ def create_app():
     api.add_namespace(post_ns, path="/post")
     api.add_namespace(homepage_ns, path="/homepage")
     api.add_namespace(faq_ns, path="/faq")
+    api.add_namespace(caseStudey_ns, path="/case_study")
+    api.add_namespace(project_ns, path="/project")
+    api.add_namespace(concept_ns, path="/concept")
+    api.add_namespace(description_ns, path="/description")
+    api.add_namespace(dashboard_ns, path='/dashboard')
 
     return app

@@ -65,7 +65,7 @@ class DashboardCreate(Resource):
         
 
 
-@dashboard_ns.route('/latest')
+@dashboard_ns.route('/')
 class LatestDashboardResource(Resource):
     def get(self):
         return DashboardService.get_dashboard()

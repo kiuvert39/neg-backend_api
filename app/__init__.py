@@ -16,6 +16,7 @@ from app.routes.description import description_ns
 from app.routes.optin import dashboard_ns
 from app.routes.explaination import explaination_ns
 from app.routes.message import message_ns
+from app.routes.footer import api as footer_ns
 
 
 
@@ -56,4 +57,10 @@ def create_app():
     api.add_namespace(dashboard_ns, path='/dashboard')
     api.add_namespace(explaination_ns, path="/explaination")    
     api.add_namespace(message_ns, path="/message")
+    api.add_namespace(footer_ns, path="/footer")
+
+
+
+
+
     return app

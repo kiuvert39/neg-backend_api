@@ -1,0 +1,2 @@
+class VideoUPload:
+    pass

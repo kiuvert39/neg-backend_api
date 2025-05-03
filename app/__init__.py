@@ -20,6 +20,7 @@ from app.routes.footer import api as footer_ns
 
 
 
+
 import logging
 
 def create_app():

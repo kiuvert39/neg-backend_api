@@ -11,9 +11,7 @@ homepage_ns = Namespace("homepahe", description="Home page Endpoints")
 
 # Request parsers
 homep_parser = reqparse.RequestParser()
-homep_parser.add_argument('title', required=True, type=str)
 homep_parser.add_argument('highlight', required=True, type=str)
-homep_parser.add_argument('subtitle', required=True, type=str)
 homep_parser.add_argument('description', required=True, type=str)
 homep_parser.add_argument('image', required=True, type=str)
 homep_parser.add_argument('created_at', required=True, type=str)
@@ -26,17 +24,13 @@ class HomepageRoutes(Resource):
     def post(self):
         """Create a new homepage"""
         # Get form data
-        title = request.form.get("title")
         highlight = request.form.get("highlight")
-        subtitle = request.form.get("subtitle")
         description = request.form.get("description")
         image_files = request.files.getlist("images")  # List of uploaded image files
         
         # Check for missing fields
         required_fields = {
-            "title": title,
             "highlight": highlight,
-            "subtitle": subtitle,
             "description": description,
             "images": image_files  # Ensure we get the list of image files
         }
